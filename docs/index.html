@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Keep</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 사이드바 -->
+      <aside class="sidebar">
+        <div class="brand">Keep</div>
+        <nav>
+          <button class="nav-item active" data-view="notes">
+            <span>💡</span> <span>Notes</span>
+          </button>
+          <div id="tagList" class="tag-list"></div>
+          <button class="nav-item" data-view="edit-tags">
+            <span>✏️</span> <span>Edit Notes</span>
+          </button>
+          <button class="nav-item" data-view="archive">
+            <span>🗄️</span> <span>Archive</span>
+          </button>
+          <button class="nav-item" data-view="trash">
+            <span>🗑️</span> <span>Trash</span>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- 메인 -->
+      <main class="main">
+        <header class="main-header">
+          <h1 id="viewTitle">Quotes</h1>
+          <div class="actions">
+            <button id="sortBtn" class="btn ghost">정렬</button>
+            <button id="addBtn" class="btn primary">＋</button>
+          </div>
+        </header>
+
+        <section id="emptyState" class="empty">노트가 없습니다.</section>
+        <section id="noteGrid" class="grid"></section>
+      </main>
+    </div>
+
+    <!-- 노트 생성/수정 모달 -->
+    <div class="modal hide" id="noteModal" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>노트 생성하기</h3>
+          <button class="icon-btn" data-close="noteModal">✕</button>
+        </div>
+
+        <div class="form">
+          <input id="noteTitle" class="input" placeholder="제목..." />
+
+          <!-- 툴바(간단 서식) -->
+          <div class="toolbar">
+            <button data-cmd="bold" title="굵게"><b>B</b></button>
+            <button data-cmd="italic" title="기울임"><i>I</i></button>
+            <button data-cmd="underline" title="밑줄"><u>U</u></button>
+            <button data-cmd="insertUnorderedList" title="리스트">•⋯</button>
+            <button data-cmd="formatBlock:h1" title="헤딩">H1</button>
+            <button data-cmd="formatBlock:blockquote" title="인용">❝</button>
+            <button data-cmd="insertImage" title="이미지">🖼️</button>
+            <button data-cmd="code" title="코드">{"</>"} </button>
+          </div>
+
+          <div id="noteBody" class="editor" contenteditable="true">노트1</div>
+
+          <div class="meta-row">
+            <button id="addTagsBtn" class="btn">Add Tag</button>
+
+            <label class="inline">
+              배경색 :
+              <select id="bgSelect">
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+                <option value="yellow">Yellow</option>
+                <option value="none">None</option>
+              </select>
+            </label>
+
+            <label class="inline">
+              우선순위
+              <select id="prioritySelect">
+                <option value="low">Low</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn" data-close="noteModal">취소</button>
+            <button id="saveNoteBtn" class="btn primary">＋ 생성하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 정렬 모달 -->
+    <div class="modal hide" id="sortModal" aria-hidden="true">
+      <div class="modal-card small">
+        <div class="modal-header">
+          <h3>정렬 <span class="link" id="clearSort">CLEAR</span></h3>
+          <button class="icon-btn" data-close="sortModal">✕</button>
+        </div>
+        <div class="sort-section">
+          <p class="label">PRIORITY</p>
+          <label class="radio"><input type="radio" name="sort" value="prio-asc"/> Low to High</label>
+          <label class="radio"><input type="radio" name="sort" value="prio-desc"/> High to Low</label>
+        </div>
+        <div class="sort-section">
+          <p class="label">DATE</p>
+          <label class="radio"><input type="radio" name="sort" value="latest"/> Sort by Latest</label>
+          <label class="radio"><input type="radio" name="sort" value="created" checked/> Sort by Created</label>
+          <label class="radio"><input type="radio" name="sort" value="edited"/> Sort by Edited</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 태그 추가 모달 -->
+    <div class="modal hide" id="addTagsModal" aria-hidden="true">
+      <div class="modal-card small">
+        <div class="modal-header">
+          <h3>ADD Tags</h3>
+          <button class="icon-btn" data-close="addTagsModal">✕</button>
+        </div>
+
+        <input id="newTagInput" class="input" placeholder="new tag..." />
+        <div id="addTagList" class="add-tag-list"></div>
+      </div>
+    </div>
+
+    <!-- 태그 관리 모달 (사이드바의 Edit Notes 클릭 시) -->
+    <div class="modal hide" id="editTagsModal" aria-hidden="true">
+      <div class="modal-card small">
+        <div class="modal-header">
+          <h3>Edit Tags</h3>
+          <button class="icon-btn" data-close="editTagsModal">✕</button>
+        </div>
+
+        <input id="manageTagInput" class="input" placeholder="new tag..." />
+        <div id="manageTagList" class="manage-tag-list"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
